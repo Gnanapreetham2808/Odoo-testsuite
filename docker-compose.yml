@@ -1,0 +1,38 @@
+# Local development stack for the sample_state_machine module.
+# Dev-only credentials (odoo/odoo); nothing here is meant for production.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  odoo:
+    image: odoo:19.0
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: odoo
+    ports:
+      - "8069:8069"
+    volumes:
+      - ./sample_state_machine:/mnt/extra-addons/sample_state_machine
+      - ./config/odoo.conf:/etc/odoo/odoo.conf:ro
+      - odoo-web-data:/var/lib/odoo
+    # Used by `docker compose up odoo` (manual testing). Test runs override the command.
+    command: ["odoo", "-d", "odoo_dev", "--db-filter=^odoo_dev$$", "--dev=xml"]
+
+volumes:
+  odoo-db-data:
+  odoo-web-data:

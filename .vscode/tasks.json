@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Tests: plain (no Odoo)",
+            "type": "shell",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ${workspaceFolder}/scripts/test-plain.ps1",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Tests: full Odoo suite (fresh DB)",
+            "type": "shell",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ${workspaceFolder}/scripts/test-odoo.ps1",
+            "group": { "kind": "test", "isDefault": true },
+            "problemMatcher": []
+        },
+        {
+            "label": "Tests: Odoo subset by tag",
+            "type": "shell",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ${workspaceFolder}/scripts/test-odoo.ps1 -Tags ${input:testTag}",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Odoo: start (http://localhost:8069)",
+            "type": "shell",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ${workspaceFolder}/scripts/start-odoo.ps1",
+            "problemMatcher": []
+        },
+        {
+            "label": "Odoo: stop",
+            "type": "shell",
+            "command": "docker compose stop",
+            "options": { "cwd": "${workspaceFolder}" },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "testTag",
+            "type": "pickString",
+            "description": "Test tag",
+            "options": ["sample_sm", "sample_sm_plain", "sample_sm_model", "sample_sm_http"],
+            "default": "sample_sm"
+        }
+    ]
+}

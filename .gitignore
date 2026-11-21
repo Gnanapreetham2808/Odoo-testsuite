@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets / env
+.env
+.env.*
+
+# VS Code (keep shared settings)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+# Docker volumes / local data
+odoo-db-data/
+odoo-web-data/
+docker-compose.override.yml
+
+# Logs and OS
+*.log
+logs/
+.DS_Store
+Thumbs.db

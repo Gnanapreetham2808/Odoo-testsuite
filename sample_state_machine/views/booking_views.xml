@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sample_booking_list" model="ir.ui.view">
+        <field name="name">sample.booking.list</field>
+        <field name="model">sample.booking</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="requester_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sample_booking_form" model="ir.ui.view">
+        <field name="name">sample.booking.form</field>
+        <field name="model">sample.booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary"
+                            invisible="state != 'submitted'"
+                            groups="sample_state_machine.group_sample_booking_manager"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state != 'submitted'"
+                            groups="sample_state_machine.group_sample_booking_manager"/>
+                    <button name="action_complete" string="Mark as done" type="object" class="btn-primary"
+                            invisible="state != 'approved'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state not in ('draft', 'submitted', 'approved')"/>
+                    <button name="action_force_cancel" string="Force cancel" type="object"
+                            invisible="state != 'done'"
+                            groups="sample_state_machine.group_sample_booking_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="requester_id"/>
+                        </group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Fictitious notes only"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sample_booking" model="ir.actions.act_window">
+        <field name="name">Equipment Bookings</field>
+        <field name="res_model">sample.booking</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_sample_booking_root" name="Sample Bookings"
+              groups="sample_state_machine.group_sample_booking_user"
+              action="action_sample_booking" sequence="90"/>
+</odoo>
