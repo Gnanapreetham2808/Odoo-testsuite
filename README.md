@@ -28,6 +28,9 @@ The first run downloads the `postgres:16` and `odoo:19.0` images (a few GB) and 
 
 ## Setup
 
+Using Claude Code? Clone the repo, then follow [`SETUP_WITH_CLAUDE.md`](SETUP_WITH_CLAUDE.md)
+instead of the steps below.
+
 ```powershell
 git clone <repo-url>
 cd <repo-folder>
@@ -128,15 +131,15 @@ scripts/                   test, demo, coverage and start scripts (PowerShell)
 config/odoo.conf           local dev config
 docker-compose.yml         postgres:16 + odoo:19.0
 CLAUDE.md                  notes for Claude Code
+SETUP_WITH_CLAUDE.md       prompt: let Claude Code set up and check everything
 ```
 
 The usernames and passwords in `docker-compose.yml` and `config/odoo.conf` are local dev
 placeholders. Don't reuse them anywhere else.
 
-## Using an AI assistant
+## Using Claude Code
 
-`CLAUDE.md` gives Claude Code the context automatically. A good first prompt:
-
-> Read README.md, CLAUDE.md and docs/hr_holidays-state-machine.md. Then run the three test
-> commands from the README and explain each result. Show me any failure as it is; don't change
-> tests to make them pass.
+[`SETUP_WITH_CLAUDE.md`](SETUP_WITH_CLAUDE.md) is a ready-made prompt. Open the repo in Claude
+Code and say **"Follow SETUP_WITH_CLAUDE.md"**. Claude checks your prerequisites, runs all the
+tests and the demo, starts Odoo, and reports the results. `CLAUDE.md` gives it the project context
+automatically.
