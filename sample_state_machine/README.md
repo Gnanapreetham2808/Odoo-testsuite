@@ -1,7 +1,7 @@
 # sample_state_machine
 
 Capability sample for **Odoo 19.0**: a small state machine on a custom model, with tests written
-in Odoo's test framework. It contains nothing from Apotropaeon; all data in it is fictitious.
+in Odoo's test framework. It contains no client data; all data in it is fictitious.
 
 ## What it contains
 

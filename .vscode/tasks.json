@@ -23,6 +23,13 @@
             "problemMatcher": []
         },
         {
+            "label": "Tests: hr_holidays transitions (fresh DB)",
+            "type": "shell",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ${workspaceFolder}/scripts/test-odoo.ps1 -Module hr_holidays_state_tests",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
             "label": "Odoo: start (http://localhost:8069)",
             "type": "shell",
             "command": "powershell -NoProfile -ExecutionPolicy Bypass -File ${workspaceFolder}/scripts/start-odoo.ps1",

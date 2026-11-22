@@ -28,6 +28,7 @@ services:
       - "8069:8069"
     volumes:
       - ./sample_state_machine:/mnt/extra-addons/sample_state_machine
+      - ./hr_holidays_state_tests:/mnt/extra-addons/hr_holidays_state_tests
       - ./config/odoo.conf:/etc/odoo/odoo.conf:ro
       - odoo-web-data:/var/lib/odoo
     # Used by `docker compose up odoo` (manual testing). Test runs override the command.

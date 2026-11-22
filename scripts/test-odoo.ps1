@@ -2,22 +2,25 @@
 #   .\scripts\test-odoo.ps1                      # all module tests (/sample_state_machine)
 #   .\scripts\test-odoo.ps1 -Tags sample_sm_model # a subset by tag
 #   .\scripts\test-odoo.ps1 -KeepDb               # keep the test DB for inspection
+#   .\scripts\test-odoo.ps1 -Module hr_holidays   # a stock Odoo module (tags default to /hr_holidays)
 param(
-    [string]$Tags = '/sample_state_machine',
+    [string]$Module = 'sample_state_machine',
+    [string]$Tags = '',
     [switch]$KeepDb
 )
 $ErrorActionPreference = 'Stop'
 Push-Location (Split-Path -Parent $PSScriptRoot)
 try {
+    if (-not $Tags) { $Tags = "/$Module" }
     $db = 'sm_test_' + (Get-Date -Format 'yyyyMMdd_HHmmss')
 
     docker compose up -d --wait db
     if ($LASTEXITCODE -ne 0) { throw 'Could not start the database container (is Docker Desktop running?)' }
 
-    Write-Host "== Fresh database: $db  tags: $Tags" -ForegroundColor Cyan
+    Write-Host "== Fresh database: $db  module: $Module  tags: $Tags" -ForegroundColor Cyan
     # Odoo logs to stderr; merge it into the pipeline without PowerShell treating it as an error.
     $ErrorActionPreference = 'Continue'
-    & docker compose run --rm --no-deps odoo odoo -d $db -i sample_state_machine `
+    & docker compose run --rm --no-deps odoo odoo -d $db -i $Module `
         "--test-tags=$Tags" --without-demo=all --stop-after-init 2>&1 |
         ForEach-Object { "$_" } | Tee-Object -Variable lines | Out-Host
     $rc = $LASTEXITCODE

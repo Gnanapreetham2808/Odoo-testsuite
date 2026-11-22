@@ -10,7 +10,11 @@ table is plain Python (`transitions.py`, it does not import Odoo). There is also
 
 Repo layout (repo root = this folder; the module is the `sample_state_machine/` subfolder):
 
-- `docker-compose.yml`: `postgres:16` + `odoo:19.0`. The module is mounted at `/mnt/extra-addons/sample_state_machine`.
+- `hr_holidays_state_tests/`: a second, test-only module. It depends on the stock `hr_holidays` (Time Off)
+  module and checks every `hr.leave` transition (18 `TransactionCase` tests, tag `hr_leave_sm`). It adds no
+  models or data. The transition table it follows is `docs/hr_holidays-state-machine.md`.
+- `docker-compose.yml`: `postgres:16` + `odoo:19.0`. Both modules are mounted under `/mnt/extra-addons/`.
+  Stock modules such as `hr_holidays` come from the image itself (`/usr/lib/python3/dist-packages/odoo/addons/`).
 - `config/odoo.conf`: dev config (addons path, DB connection). Dev-only credentials.
 - `scripts/*.ps1`: the three day-to-day jobs (below). `.vscode/tasks.json` wraps them.
 
@@ -21,6 +25,8 @@ Repo layout (repo root = this folder; the module is the `sample_state_machine/` 
 | Plain tests (no Odoo, no DB) | `.\scripts\test-plain.ps1` |
 | Full Odoo suite, fresh DB | `.\scripts\test-odoo.ps1` |
 | Odoo subset by tag | `.\scripts\test-odoo.ps1 -Tags sample_sm_model` |
+| hr_holidays transition tests | `.\scripts\test-odoo.ps1 -Module hr_holidays_state_tests` (expect `0 failed, 0 error(s) of 18 tests`) |
+| hr_holidays demo walk-through | `.\scripts\demo-hr-holidays.ps1` |
 | Start Odoo for manual testing | `.\scripts\start-odoo.ps1` (`-Reset` to recreate the DB), then http://localhost:8069, admin / admin |
 | Stop | `docker compose stop` |
 
@@ -51,6 +57,7 @@ If PowerShell blocks the scripts, run `powershell -ExecutionPolicy Bypass -File 
 
 - It is a sample that will be **sent to an external client for review**. It must contain nothing from that client's business: no real names, no real data, fictitious data only.
 - Never use the phrase "supplier payment gate" or any payment-provider names anywhere in the module.
-- Keep `base` as the **only** dependency in `__manifest__.py`.
+- Keep `base` as the **only** dependency in `sample_state_machine/__manifest__.py`. Anything that needs
+  `hr_holidays` goes in `hr_holidays_state_tests/`.
 - Use Odoo 19 conventions: `<list>` not `<tree>`; `models.Constraint` instead of `_sql_constraints` if SQL constraints are ever added; `check_access` instead of `check_access_rights`.
 - Do not commit secrets or `.env` files. The credentials in `docker-compose.yml` / `config/odoo.conf` are local dev placeholders only.
