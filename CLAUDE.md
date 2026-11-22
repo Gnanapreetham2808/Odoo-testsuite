@@ -27,7 +27,7 @@ Repo layout (repo root = this folder; the module is the `sample_state_machine/` 
 | Odoo subset by tag | `.\scripts\test-odoo.ps1 -Tags sample_sm_model` |
 | hr_holidays transition tests | `.\scripts\test-odoo.ps1 -Module hr_holidays_state_tests` (expect `0 failed, 0 error(s) of 18 tests`) |
 | hr_holidays demo walk-through | `.\scripts\demo-hr-holidays.ps1` |
-| Start Odoo for manual testing | `.\scripts\start-odoo.ps1` (`-Reset` to recreate the DB), then http://localhost:8069, admin / admin |
+| Start Odoo for manual testing | `.\scripts\start-odoo.ps1` (`-Reset` to recreate the DB), then http://localhost:8069, admin / admin. Installs `sample_state_machine` and the stock Time Off app (`hr_holidays`) in `odoo_dev`. |
 | Stop | `docker compose stop` |
 
 What the scripts run:

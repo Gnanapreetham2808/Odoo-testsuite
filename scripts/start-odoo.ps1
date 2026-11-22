@@ -1,5 +1,6 @@
-# Starts Odoo on http://localhost:8069 with sample_state_machine installed in database odoo_dev.
-#   .\scripts\start-odoo.ps1          # create odoo_dev on first run, otherwise upgrade the module
+# Starts Odoo on http://localhost:8069 with sample_state_machine and the stock Time Off app
+# (hr_holidays) installed in database odoo_dev.
+#   .\scripts\start-odoo.ps1          # create odoo_dev on first run, otherwise upgrade/install the modules
 #   .\scripts\start-odoo.ps1 -Reset   # drop odoo_dev and start from scratch
 # Login: admin / admin. The admin user is added to "Booking Manager" so the menu is visible.
 # Stop with: docker compose stop   |  Logs: docker compose logs -f odoo
@@ -19,12 +20,14 @@ try {
 
     $exists = docker compose exec -T db psql -U odoo -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='$db'"
     if ("$exists".Trim() -ne '1') {
-        Write-Host "== Creating $db and installing sample_state_machine" -ForegroundColor Cyan
-        docker compose run --rm --no-deps odoo odoo -d $db -i sample_state_machine --without-demo=all --stop-after-init
+        Write-Host "== Creating $db and installing sample_state_machine + Time Off (hr_holidays)" -ForegroundColor Cyan
+        docker compose run --rm --no-deps odoo odoo -d $db -i sample_state_machine,hr_holidays --without-demo=all --stop-after-init
         if ($LASTEXITCODE -ne 0) { throw 'Module install failed' }
     } else {
-        Write-Host "== Upgrading sample_state_machine in $db" -ForegroundColor Cyan
-        docker compose run --rm --no-deps odoo odoo -d $db -u sample_state_machine --stop-after-init
+        # -i hr_holidays installs Time Off on databases created before it was part of the setup;
+        # it does nothing if it is already installed.
+        Write-Host "== Upgrading sample_state_machine (and making sure Time Off is installed) in $db" -ForegroundColor Cyan
+        docker compose run --rm --no-deps odoo odoo -d $db -u sample_state_machine -i hr_holidays --stop-after-init
         if ($LASTEXITCODE -ne 0) { throw 'Module upgrade failed' }
     }
 

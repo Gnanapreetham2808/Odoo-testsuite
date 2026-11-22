@@ -65,7 +65,10 @@ Explain the output briefly against the table in `docs/hr_holidays-state-machine.
 ## Step 6: Start Odoo for manual testing
 
 Run `.\scripts\start-odoo.ps1`. Expect `Odoo is up: http://localhost:8069 (admin / admin)`.
-Tell me to open http://localhost:8069, log in as admin / admin, and use the **Sample Bookings** menu.
+It creates the database `odoo_dev` with the sample module and Odoo's **Time Off** app installed.
+Tell me to open http://localhost:8069 and log in as admin / admin. Then give me the "In the
+browser" steps from the README for trying **Time Off** (request, approve, refuse, cancel) and
+**Sample Bookings**.
 Odoo keeps running in Docker until `docker compose stop`.
 
 ## Step 7: Report

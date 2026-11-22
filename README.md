@@ -77,13 +77,24 @@ VS Code: the same commands are available under **Terminal → Run Task**.
 # Uses a scratch database hr_demo and rolls its changes back, so you can re-run it.
 .\scripts\demo-hr-holidays.ps1
 
-# Start Odoo with the sample module, then open http://localhost:8069 (admin / admin),
-# menu "Sample Bookings".  -Reset recreates the database.
+# Start Odoo with the sample module and the Time Off app, then open
+# http://localhost:8069 (admin / admin).  -Reset recreates the database.
 .\scripts\start-odoo.ps1
 
 # Stop everything
 docker compose stop
 ```
+
+In the browser:
+
+- **Time Off**: admin is a Time Off administrator. **Time Off → New**, then pick a type that needs no
+  allocation, then approve, refuse or cancel it. Types to try: *Unpaid* (approver + officer), *Sick Time Off*
+  (officer only), *Unpaid leave* (no approval, approved straight away). *Paid Time Off* needs an
+  allocation first (**Time Off → Management → Allocations**). To see the two-step approval, create a
+  second employee with admin as their **Time Off** approver and request leave for them.
+- **Sample Bookings**: admin is in the Booking Manager group, so every button is available.
+
+The database has no demo data. Everything you create there is your own test data.
 
 ## What the Time Off tests cover
 
