@@ -90,9 +90,11 @@ In the browser:
 - **Time Off**: admin is a Time Off administrator. **Time Off → New**, then pick a type that needs no
   allocation, then approve, refuse or cancel it. Types to try: *Unpaid* (approver + officer), *Sick Time Off*
   (officer only), *Unpaid leave* (no approval, approved straight away). *Paid Time Off* needs an
-  allocation first (**Time Off → Management → Allocations**). To see the two-step approval, create a
-  second employee with admin as their **Time Off** approver and request leave for them.
+  allocation first (**Time Off → Management → Allocations**). To see the two-step approval, you need a
+  second user as the approver, because admin is an officer and skips that step.
 - **Sample Bookings**: admin is in the Booking Manager group, so every button is available.
+
+Step-by-step walk-throughs for both apps: **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)**.
 
 The database has no demo data. Everything you create there is your own test data.
 
